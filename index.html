@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+      </a>
+  </div>
+  <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+          <a class="navbar-item" href="https://sunyangtian.github.io/unigeo_web/">
+    <span class="icon">
+        <i class="fas fa-home"></i>
+    </span>
+          </a>
+
+          <!-- <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">
+                  Related Research
+              </a>
+              <div class="navbar-dropdown">
+                  <a class="navbar-item" href="https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/"
+                     target="_blank">
+                      3D Gaussian Splatting
+                  </a>
+                  <a class="navbar-item" href="https://sunyangtian.github.io/spatter_a_video_web/" target="_blank">
+                      SC-GS
+                  </a>
+              </div>
+          </div> -->
+      </div>
+
+  </div>
+</nav>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description"
+          content="UniGeo">
+    <meta name="keywords" content="Video Processing, Gaussian Splatting">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UniGeo: Taming Video Diffusion for Unified Consistent Geometry Estimation</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/ARF_VanGogh.jpg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/PLYLoader.min.js"></script>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">UniGeo: Taming Video Diffusion for Unified Consistent Geometry Estimation</h1>
+            
+            <div class="title is-3">
+              <strong>Arxiv 2025</strong>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <div class="author-block">
+                <a href="https://sunyangtian.github.io/">Yang-Tian Sun</a><sup>1</sup>,
+              </div>
+              <div class="author-block">
+                <a href="https://xinyu-andy.github.io/">Xin Yu</a><sup>1</sup>,
+              </div>
+              <div class="author-block">
+                <a href="https://huanngzh.github.io/">Zehuan Huang</a><sup>2</sup>,
+              </div>
+              <div class="author-block">
+                <a href="https://yihua7.github.io/website/">Yi-Hua Huang</a><sup>1</sup>,
+              </div>
+              <br>
+              <div class="author-block">
+                <a href="https://scholar.google.com/citations?user=b7ZJV9oAAAAJ&hl=zh-CN">Yuan-Chen Guo</a><sup>3</sup>,
+              </div>
+              <div class="author-block">
+                <a href="https://ingra14m.github.io/">Ziyi Yang</a><sup>1</sup>,
+              </div>
+              <div class="author-block">
+                <a href="https://yanpei.me/">Yan-Pei Cao</a><sup>3</sup>,
+              </div>
+              <div class="author-block">
+                <a href="https://xjqi.github.io/">Xiaojuan Qi</a><sup>1 <i class="fa fa-envelope"></i></sup>
+              </div>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>The University of Hong Kong</span>,
+              <span class="author-block"><sup>2</sup>Beihang University</span>,
+              <span class="author-block"><sup>3</sup>VAST</span>
+              <!-- <span class="author-block"><sup>3</sup>Zhejiang University</span> -->
+          </div>
+          
+          <!-- <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>*</sup>Equal Contribution</span>,
+              <span class="author-block"><sup>#</sup>Corresponding Author</span>
+          </div> -->
+
+          <!-- <div class="is-size-5 publication-authors">
+            <sup>1</sup> <a href="https://www.hku.hk/"><img style="width:12%; padding-right: 15px;" src="materials/logo/HKU.png"> </a>
+            <sup>2</sup> <a href="https://github.com/VAST-AI-Research"><img style="width:45%; padding-right: 15px;" src="materials/logo/VAST.png"> </a>
+          </div> -->
+
+	    <!-- <div class="is-size-5 publication-authors">
+		<strong>Arxiv</strong>
+            </div> -->
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <!-- <span class="link-block">
+                  <a href="./materials/SC_GS_Arxiv.pdf"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span> -->
+                <span class="link-block">
+                  <!-- <a href="./materials/SC_GS_Supp.pdf"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Supp</span>
+                  </a> -->
+                </span>
+                <span class="link-block">
+                  <a href="https://sunyangtian.github.io/unigeo_web/" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- <span class="link-block">
+                  <a href="https://youtu.be/CYQYX_0xi5E"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                        <i class="fab fa-youtube"></i>
+                    </span>
+                    <span>Video</span>
+                  </a>
+                </span> -->
+                <span class="link-block">
+                  <a href="https://sunyangtian.github.io/unigeo_web/"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <!-- <h2 class="title is-3">Abstract</h2> -->
+        <div class="content has-text-justified">
+          <p><strong>TL, DR:</strong> We propose a method for joint geometry estimation (specifically surface normals and coordinates) from multi-view images and video clips within a unified space, by leveraging the inter-frame correspondence prior embedded in the video diffusion model.</p>
+        </div>
+      </div>
+    </div>
+
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <!-- <h2 class="title is-3">Teaser</h2> -->
+        <div class="content has-text-justified">
+          <img src="materials/images/teaser2.jpg" alt="Teaser" style="width: 100%; height: auto; display: block;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<section class="section">
+<div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Motivation</h2>
+        <div class="content has-text-justified">
+          <img src="materials/images/motivation.jpg" alt="Teaser" style="width: 80%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+          
+          <!-- 添加的bullet points -->
+          <div class="content has-text-left mt-4">
+            <ul>
+              <li>Pre-trained video diffusion
+                  models capture accurate inter-frame correspondence (the same
+                  patches in different frames highlight in the attention maps) </li>
+              <li>The correspondence can be specified by applying identical positional encodings onto different frames </li>
+              <li>Geometric properties within a shared global coordinate system naturally exhibit alignment across frames. </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+
+          </p>
+        </div>
+      </div>
+    </div> -->
+
+  <!-- Paper video. -->
+  <!-- <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+      <h2 class="title is-3">Video</h2>
+      <div class="publication-video">
+        <iframe src="https://www.youtube.com/embed/CYQYX_0xi5E?si=JXEJLI9cMgbS__cM"
+                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div> -->
+  <!--/ Paper video. -->
+
+    <section class="section">
+      <div class="column has-text-centered is-full-width">
+        <div class="column is-full-width ">
+          <h2 class="title is-3">Video Geometry Estimation </h2>
+          <div id="results-carousel" class="carousel results-carousel ">
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/video2.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/video6.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/video3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/video5.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="column is-full-width ">
+          <div id="results-carousel" class="carousel results-carousel ">
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/video8.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/video7.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/video9.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/video4.mp4" type="video/mp4">
+              </video>
+            </div>
+        </div>
+    </section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Multi-View Images Geometry Estimation</h2>
+        
+        <!-- 三列布局 -->
+        <div class="columns">
+          <!-- 左侧：图片 -->
+          <div class="column is-one-third">
+            <img src="./materials/pointclouds/image1.jpg" alt="原始图像" style="width: 100%; height: 300px; object-fit: contain; border-radius: 5px;">
+            <!-- <p class="has-text-centered mt-2">原始图像</p> -->
+          </div>
+          
+          <!-- 中间：点云1 -->
+          <div class="column is-one-third">
+            <div id="pointcloud-container-1" class="pointcloud-container" data-ply-path="./materials/pointclouds/pcd_color1.ply" style="height: 300px; border-radius: 5px;"></div>
+            <!-- <p class="has-text-centered mt-2">点云视图 1</p> -->
+          </div>
+          
+          <!-- 右侧：点云2 -->
+          <div class="column is-one-third">
+            <div id="pointcloud-container-2" class="pointcloud-container" data-ply-path="./materials/pointclouds/pcd_normal1.ply" style="height: 300px; border-radius: 5px;"></div>
+            <!-- <p class="has-text-centered mt-2">点云视图 2</p> -->
+          </div>
+        </div>
+
+        <div class="columns 2">
+          <!-- 左侧：图片 -->
+          <div class="column is-one-third">
+            <img src="./materials/pointclouds/image2.jpg" alt="原始图像2" style="width: 100%; height: 300px; object-fit: contain; border-radius: 5px;">
+            <!-- <p class="has-text-centered mt-2">原始图像</p> -->
+          </div>
+          
+          <!-- 中间：点云1 -->
+          <div class="column is-one-third">
+            <div id="pointcloud-container-3" class="pointcloud-container" data-ply-path="./materials/pointclouds/pcd_color2.ply" style="height: 300px; border-radius: 5px;"></div>
+            <!-- <p class="has-text-centered mt-2">点云视图 1</p> -->
+          </div>
+          
+          <!-- 右侧：点云2 -->
+          <div class="column is-one-third">
+            <div id="pointcloud-container-4" class="pointcloud-container" data-ply-path="./materials/pointclouds/pcd_normal2.ply" style="height: 300px; border-radius: 5px;"></div>
+            <!-- <p class="has-text-centered mt-2">点云视图 2</p> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <section class="section">
+      <div class="column has-text-centered is-full-width">
+        <div class="column is-full-width ">
+          <h2 class="title is-3">Dynamic Video Geometry Estimation </h2>
+          <div id="results-carousel" class="carousel results-carousel ">
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/video_dynamic1.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/video_dynamic2.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/video_dynamic3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/video_dynamic4.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="column is-full-width ">
+          <div id="results-carousel" class="carousel results-carousel ">
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/DAVIS/video_davis1.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/DAVIS/video_davis11.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/DAVIS/video_davis3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/DAVIS/video_davis4.mp4" type="video/mp4">
+              </video>
+            </div>
+        </div>
+
+
+        <div class="column is-full-width ">
+          <div id="results-carousel" class="carousel results-carousel ">
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/DAVIS/video_davis5.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/DAVIS/video_davis6.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/DAVIS/video_davis7.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/DAVIS/video_davis8.mp4" type="video/mp4">
+              </video>
+            </div>
+        </div>
+
+        <div class="column is-full-width ">
+          <div id="results-carousel" class="carousel results-carousel ">
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/DAVIS/video_davis10.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/DAVIS/video_davis9.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/DAVIS/video_davis2.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/DAVIS/video_davis12.mp4" type="video/mp4">
+              </video>
+            </div>
+        </div>
+    </section>
+
+
+    
+    <section class="section">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Long Video Stitching</h2>
+          <p>
+            <!-- Text -->
+          </p>
+          <div id="results-carousel" class="carousel2 results-carousel">
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/video_long1.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+          <div id="results-carousel" class="carousel2 results-carousel">
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/video_long2.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Comparison with other methods</h2>
+          <p>
+            <!-- Text -->
+          </p>
+          <div id="results-carousel" class="carousel2 results-carousel">
+            <div class="item item-steve">
+              <video poster="" id="steve" autoplay controls muted loop width="100%">
+                <source src="./materials/videos/recon_compare.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    
+
+
+
+    <!-- <section class="section">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Quantative Comparison on Tap-Vid DAVIS</h2>
+
+          <style type="text/css">
+            .tg  {border-collapse:collapse;border-spacing:0;}
+            .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+              overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+              font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg .tg-1wig{font-weight:bold;text-align:left;vertical-align:top}
+            .tg .tg-0lax{text-align:left;vertical-align:top}
+            table {
+              margin: 0 auto;
+            }
+            </style>
+            <table class="tg"><thead>
+              <tr>
+                <th class="tg-0lax">Methods</th>
+                <th class="tg-0lax">PSNR↑</th>
+                <th class="tg-0lax">SSIM↑</th>
+                <th class="tg-0lax">LPIPS↓</th>
+                <th class="tg-0lax">AJ ↑</th>
+                <th class="tg-0lax"><δ<sup>x</sup><sub>avg</sub> ↑</th>
+                <th class="tg-0lax">OA ↑</th>
+                <th class="tg-0lax">TC ↓</th>
+                <th class="tg-0lax">Training Time</th>
+                <th class="tg-0lax">GPU Memory</th>
+                <th class="tg-0lax">FPS</th>
+              </tr></thead>
+            <tbody>
+              <tr>
+                <td class="tg-0lax">4DGS</td>
+                <td class="tg-0lax">18.12</td>
+                <td class="tg-0lax">0.5735</td>
+                <td class="tg-0lax">0.5130</td>
+                <td class="tg-0lax">5.1</td>
+                <td class="tg-0lax">10.2</td>
+                <td class="tg-0lax">75.45</td>
+                <td class="tg-0lax">8.11</td>
+                <td class="tg-0lax">40 mins</td>
+                <td class="tg-0lax">10G</td>
+                <td class="tg-0lax">145.8</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">RoDynRF</td>
+                <td class="tg-0lax">24.79</td>
+                <td class="tg-0lax">0.723</td>
+                <td class="tg-0lax">0.394</td>
+                <td class="tg-0lax">\</td>
+                <td class="tg-0lax">\</td>
+                <td class="tg-0lax">\</td>
+                <td class="tg-0lax">\</td>
+                <td class="tg-0lax">> 24 hours</td>
+                <td class="tg-0lax">24G</td>
+                <td class="tg-0lax"><0.01</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">Deformable Sprites</td>
+                <td class="tg-0lax">22.83</td>					
+                <td class="tg-0lax">0.6983</td>
+                <td class="tg-0lax">0.3014</td>
+                <td class="tg-0lax">20.6</td>
+                <td class="tg-0lax">32.9</td>
+                <td class="tg-0lax">69.7</td>
+                <td class="tg-0lax">2.07</td>
+                <td class="tg-0lax">30 mins</td>
+                <td class="tg-0lax">24G</td>
+                <td class="tg-0lax">1.6</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">Omnimotion</td>							
+                <td class="tg-0lax">24.11</td>
+                <td class="tg-0lax">0.7145</td>
+                <td class="tg-0lax">0.3713</td>
+                <td class="tg-0lax"><span style="font-weight:bold">51.7</span></td>
+                <td class="tg-0lax"><span style="font-weight:bold">67.5</span></td>
+                <td class="tg-0lax"><span style="font-weight:bold">85.3</span></td>
+                <td class="tg-0lax"><span style="font-weight:bold">0.74</span></td>
+                <td class="tg-0lax">> 24 hours</td>
+                <td class="tg-0lax">24G</td>
+                <td class="tg-0lax"> <0.01</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">CoDeF</td>
+                <td class="tg-0lax">26.17</td>
+                <td class="tg-0lax">0.8160</td>
+                <td class="tg-0lax">0.2905</td>
+                <td class="tg-0lax">7.6</td>
+                <td class="tg-0lax">13.7</td>
+                <td class="tg-0lax">78.0</td>
+                <td class="tg-0lax">7.56</td>
+                <td class="tg-0lax">~30 mins</td>
+                <td class="tg-0lax">10G</td>
+                <td class="tg-0lax"> 8.8</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">Ours</td>
+                <td class="tg-0lax"><span style="font-weight:bold">28.63</span></td>
+                <td class="tg-0lax"><span style="font-weight:bold">0.8373</span></td>
+                <td class="tg-0lax"><span style="font-weight:bold">0.2283</span></td>
+                <td class="tg-0lax">41.9</td>
+                <td class="tg-0lax">57.7</td>
+                <td class="tg-0lax">79.2</td>
+                <td class="tg-0lax">1.82</td>
+                <td class="tg-0lax">~30 mins</td>
+                <td class="tg-0lax">10G</td>
+                <td class="tg-0lax"> 149 </td>
+              </tr>
+            </tbody></table>
+
+        </div>
+      </div>
+    </section>
+ -->
+
+
+
+
+
+    <!-- <style type="static/css">
+      .tg  {border-collapse:collapse;border-spacing:0;}
+      .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+        overflow:hidden;padding:10px 5px;word-break:normal;}
+      .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+        font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+      .tg .tg-0lax{text-align:left;vertical-align:top}
+      </style>
+      <table class="tg"><thead>
+        <tr>
+          <th class="tg-0lax">Methods</th>
+          <th class="tg-0lax">Bear</th>
+          <th class="tg-0lax">Cow</th>
+          <th class="tg-0lax"></th>
+          <th class="tg-0lax"></th>
+          <th class="tg-0lax"></th>
+          <th class="tg-0lax"></th>
+        </tr></thead> -->
+
+
+  <!-- <section class="section " id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{sun2024splatter,
+        title={Splatter a Video: Video Gaussian Representation for Versatile Processing},
+        author={Sun, Yang-Tian and Huang, Yi-Hua and Ma, Lin and Lyu, Xiaoyang and Cao, Yan-Pei and Qi, Xiaojuan},
+        journal={arXiv preprint arXiv:2406.13870},
+        year={2024}
+      }</code></pre>
+    </div>
+  </section> -->
+
+  <div class="columns is-centered">
+    <div class="column is-full-width">
+      <h2 class="title is-3">Acknowledgements</h2>
+      <div class="content has-text-justified">
+        <p>The website template is borrowed from <a href="https://nerfies.github.io/">Nerfies</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
